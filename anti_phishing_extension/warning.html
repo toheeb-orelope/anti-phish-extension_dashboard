@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsafe URL Blocked</title>
+    <script src="warning.js" defer></script>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; }
+      .wrap { max-width: 760px; margin: 40px auto; padding: 0 16px; }
+      .card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+      h1 { margin: 0 0 10px; color: #b00020; }
+      pre { background: #f6f8fa; padding: 12px; border-radius: 6px; overflow: auto; }
+      .actions { display: flex; gap: 12px; margin-top: 16px; }
+      button { background: #b00020; color:#fff; border:none; border-radius:6px; padding:10px 14px; cursor:pointer; }
+      button.secondary { background: #555; }
+      .muted { color: #666; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>Navigation blocked</h1>
+        <p id="target"></p>
+        <pre id="reasons">Loading reasons...</pre>
+        <div class="actions">
+          <button id="open-dashboard">Open Dashboard</button>
+          <button id="go-back" class="secondary">Go Back</button>
+        </div>
+        <p class="muted">Blocked because both VirusTotal and Local AI labeled this URL as phishing.</p>
+      </div>
+    </div>
+  </body>
+  </html>
+

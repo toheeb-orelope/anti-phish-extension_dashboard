@@ -1,0 +1,20 @@
+mplemented your block rule and added alerts/warnings.
+
+What I changed
+
+Added your rule to rules/ruleset_1.json:1 to block bad-phish.example for main_frame, sub_frame, and xmlhttprequest.
+Added a match alert: background.js:25 listens to chrome.declarativeNetRequest.onRuleMatchedDebug and shows a Chrome notification when any DNR rule matches.
+Added an in‑page warning banner: contentScript.js:20 injects a top banner on pages whose hostname matches a flagged domain list (defaults to bad-phish.example). Defaults are initialized in background.js:9.
+How the alerts/warnings work
+
+Alert: When your rule matches, you get a Chrome notification with the hostname and rule ID.
+Warning banner: If a flagged site loads, the page shows a dismissible red banner. Note: for main_frame requests, your rule blocks navigation, so only the notification will appear (the page won’t load to show a banner).
+Where to adjust
+
+Add or remove flagged domains via chrome.storage.sync key blockedDomains (defaults set on install). The banner can be toggled with showBannerWarnings.
+Rule is at rules/ruleset_1.json:1. You can add more rules for other domains or patterns.
+Test
+
+Reload the extension, then try navigating to a URL containing bad-phish.example. You should see “ERR_BLOCKED_BY_CLIENT” and a notification from the extension.
+Want a custom warning page instead of a hard block? I can switch the main_frame rule to a redirect that shows warning.html with details and a “Go back” link. Example rule action:
+

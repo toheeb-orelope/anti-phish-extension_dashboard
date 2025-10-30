@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="options.js" defer></script>
+    <link rel="stylesheet" href="/style/options.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Phishing Detector — Settings</h1>
+        <p class="subtitle">
+          Add your API keys for VirusTotal and your local endpoint.
+        </p>
+      </div>
+
+      <section class="card" aria-labelledby="vt-title">
+        <h2 id="vt-title">VirusTotal API Key</h2>
+        <p class="help">
+          Get a key by creating a free account, then visit
+          <a
+            href="https://www.virustotal.com/gui/my-apikey"
+            target="_blank"
+            rel="noopener noreferrer"
+            >My API key</a
+          >.
+        </p>
+        <label for="vt-api-key">Key</label>
+        <div class="input-row">
+          <input
+            id="vt-api-key"
+            type="password"
+            inputmode="latin"
+            autocomplete="off"
+            placeholder="Enter VirusTotal API key"
+            aria-label="VirusTotal API key"
+          />
+          <button
+            class="toggle-visibility"
+            data-target="vt-api-key"
+            type="button"
+          >
+            Show
+          </button>
+        </div>
+
+        <details>
+          <summary>Where to find it</summary>
+          <img
+            class="inline-img"
+            src="images/virustools1.png"
+            alt="VirusTotal registration screenshot"
+          />
+          <div style="height: 8px"></div>
+          <img
+            class="inline-img"
+            src="images/virustools2.png"
+            alt="VirusTotal API key location screenshot"
+          />
+        </details>
+      </section>
+
+      <section class="card" aria-labelledby="local-title">
+        <h2 id="local-title">Local Endpoint API Key</h2>
+        <p class="help">
+          Add the API key for your locally hosted endpoint (if required by your
+          service).
+        </p>
+        <label for="local-api-key">Key</label>
+        <div class="input-row">
+          <input
+            id="local-api-key"
+            type="password"
+            inputmode="latin"
+            autocomplete="off"
+            placeholder="Enter local endpoint API key"
+            aria-label="Local endpoint API key"
+          />
+          <button
+            class="toggle-visibility"
+            data-target="local-api-key"
+            type="button"
+          >
+            Show
+          </button>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button id="save-btn" class="btn" type="button">Save Settings</button>
+        <p id="success-message" class="success-message">
+          Settings saved successfully.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

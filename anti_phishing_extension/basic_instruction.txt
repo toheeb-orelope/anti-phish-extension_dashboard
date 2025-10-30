@@ -1,0 +1,2 @@
+To access extension
+chrome://extensions --> turn on the developer mode --> Load unpacked --> upload the folder where you create the extension files

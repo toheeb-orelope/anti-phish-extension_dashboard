@@ -1,0 +1,100 @@
+{
+  "manifest_version": 3,
+  "name": "Phishing Detector",
+  "short_name": "PhishDetect",
+  "description": "Real-time phishing detection using local models + threat intel APIs (popup, content script, background worker).",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+
+  "action": {
+    "default_title": "Phishing Detector",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "options_page": "options.html",
+
+  /* Host access for network checks, threat intel and to inspect visited pages.
+     Using <all_urls> is powerful — consider restricting in production. */
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  /* Declared permissions (wide set for a phishing detector). */
+  "permissions": [
+    "storage",                /* persistent local storage for model / settings */
+    "activeTab",              /* temporarily interact with the active tab */
+    "scripting",              /* inject scripts programmatically */
+    "tabs",                   /* inspect tab URL/title */
+    "cookies",                /* read cookies when checking host state (if needed) */
+    "alarms",                 /* periodic background tasks (cache refresh, rules update) */
+    "notifications",          /* user alerts when a page is flagged */
+    "bookmarks",              /* optional: to check or tag saved bookmarks */
+    "identity",               /* optional: if you integrate OAuth for external APIs */
+    "webRequest",             /* observe requests (non-blocking use) */
+    "webRequestBlocking",     /* blocking interception (careful — requires strong justification) */
+    "declarativeNetRequest",  /* recommended MV3 approach for blocking/filtering rules */
+    "declarativeNetRequestFeedback" /* allows feedback interface (if available) */
+  ],
+
+  /* Optionally request permissions at runtime for extra safety */
+  "optional_permissions": [
+    "history",
+    "management"
+  ],
+
+  /* Example declarativeNetRequest ruleset resource (useful for blocking suspicious hosts locally).
+     Create rules/ruleset_1.json in your extension package. */
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "phish_block_rules_v1",
+        "enabled": true,
+        "path": "rules/ruleset_1.json"
+      }
+    ]
+  },
+
+  /* Content security policy for extension pages (MV3 style). */
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+
+  /* Optional: Define keyboard commands if you want quick actions. */
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Open Phishing Detector popup"
+    }
+  },
+
+  /* Developer metadata (useful for testing); remove/adjust for publishing. */
+  "author": "Your Name or Team",
+  "homepage_url": "https://yourproject.example.com",
+  "minimum_chrome_version": "88"
+}
