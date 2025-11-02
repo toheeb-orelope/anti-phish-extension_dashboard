@@ -75,7 +75,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       const warn =
         chrome.runtime.getURL("warning.html") +
         `?url=${encodeURIComponent(url)}`;
-      chrome.tabs.update(tabId, { url: warn });
+      try { await chrome.tabs.update(tabId, { url: warn }); } catch (e) {}
     }
     // Start or refresh background scan so subsequent attempts can be blocked immediately
     const { virusTotalApiKey, localApiKey } = await chrome.storage.sync.get([
@@ -107,7 +107,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         const warn =
           chrome.runtime.getURL("warning.html") +
           `?url=${encodeURIComponent(url)}`;
-        chrome.tabs.update(tabId, { url: warn });
+        try { await chrome.tabs.update(tabId, { url: warn }); } catch (e) {}
       }
     } catch {}
   } catch {}
@@ -353,10 +353,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     } else if (message?.type === "OPEN_DASHBOARD") {
       const url = message.url;
-      const target = `http://localhost:3000/?url=${encodeURIComponent(
-        url || ""
-      )}`;
-      chrome.tabs.create({ url: target });
+      const target = buildDashboardUrl(url || "");
+      try { await chrome.tabs.create({ url: target }); } catch (e) {}
       sendResponse(true);
     } else if (message?.type === "REDIRECT_WARNING") {
       const url = message.url || "";
@@ -364,7 +362,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.runtime.getURL("warning.html") +
         `?url=${encodeURIComponent(url)}`;
       if (sender?.tab?.id) {
-        chrome.tabs.update(sender.tab.id, { url: warn });
+        try { await chrome.tabs.update(sender.tab.id, { url: warn }); } catch (e) {}
         sendResponse(true);
       } else {
         sendResponse(false);
@@ -379,11 +377,26 @@ chrome.notifications.onClicked.addListener((notificationId) => {
   const url =
     notificationId?.startsWith("phish-") &&
     lastNotificationUrlMap[notificationId];
-  const target = `http://localhost:3000/?url=${encodeURIComponent(url || "")}`;
-  chrome.tabs.create({ url: target });
+  const target = buildDashboardUrl(url || "");
+  chrome.tabs.create({ url: target }).catch?.(() => {});
 });
 
 const lastNotificationUrlMap = {};
+
+// --- Dashboard helpers ---
+function buildDashboardUrl(url, vt, local) {
+  const base = "http://localhost:3000/scan"; // adjust for prod
+  const params = new URLSearchParams();
+  if (url) params.set("url", url);
+  if (vt) {
+    try { params.set("vt", btoa(JSON.stringify(vt))); } catch (e) {}
+  }
+  if (local) {
+    try { params.set("local", btoa(JSON.stringify(local))); } catch (e) {}
+  }
+  const qs = params.toString();
+  return qs ? `${base}?${qs}` : base;
+}
 
 // --- Automatic blocking on navigation using cache ---
 // If we have both-VT-and-Local malicious verdict cached for a URL, redirect to warning page.

@@ -1,0 +1,1 @@
+// To contain footer component of the web application

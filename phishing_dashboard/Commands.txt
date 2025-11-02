@@ -1,0 +1,27 @@
+To setup a react project using next.js framework: npx create-next-app@latest appname
+This is to run and view the progress live: npm run dev this is to run in a development mode
+
+Run in production mode:
+npm run build
+npm run start
+
+prisma to manage the database connection: npm install prisma -D
+using prisma to access: npx prisma init --datasource-provider MySQL
+This will create the tables in your local MySQL database: npx prisma migrate dev --name init
+
+
+
+Next steps:
+1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
+2. Run prisma db pull to turn your database schema into a Prisma schema.
+3. Run prisma generate to generate the Prisma Client. You can then start querying your database.
+4. Tip: Explore how you can extend the ORM with scalable connection pooling, global caching, and real-time database events. Read: https://pris.ly/cli/beyond-orm
+
+More information in our documentation:
+https://pris.ly/d/getting-started
+
+install heroui: npm install @heroui/react framer-motion
+
+
+
+
